@@ -1,16 +1,38 @@
  import React from "react";
+ import { useState } from "react";
+ import {Resister_users} from "./api/auth"
  import * as Components from './Components';
 
+
+
  function App() {
+     const [username, setUsers] = useState('');
+     const [password, setPassword] = useState('');   
      const [signIn, toggle] = React.useState(true);
+     const handleSubmit = async(e) => {
+        e.preventDefault();
+        if (username.length === 0) {
+            alert("inserte el usuario")
+        }else if (password.length === 0){
+            alert("inserte el password")
+        }else{
+            const res = await Resister_users({
+                username, 
+                password
+            })
+            console.log(res)
+        } 
+
+        
+     }
+
       return(
           <Components.Container>
               <Components.SignUpContainer signinIn={signIn}>
-                  <Components.Form>
+                  <Components.Form onSubmit={handleSubmit}>
                       <Components.Title>Create Account</Components.Title>
-                      <Components.Input type='text' placeholder='Name' />
-                      <Components.Input type='email' placeholder='Email' />
-                      <Components.Input type='password' placeholder='Password' />
+                      <Components.Input type='text' placeholder='Name'  onChange={(e)=>setUsers(e.target.value)}/>
+                      <Components.Input type='password' placeholder='Password' onChange={(e)=>setPassword(e.target.value)} />
                       <Components.Button>Sign Up</Components.Button>
                   </Components.Form>
               </Components.SignUpContainer>
