@@ -1,9 +1,9 @@
  import React from "react";
  import { useState } from "react";
  import {Resister_users} from "./api/auth"
+ import {Login} from "./api/auth"
+
  import * as Components from './Components';
-
-
 
  function App() {
      const [username, setUsers] = useState('');
@@ -16,14 +16,36 @@
         }else if (password.length === 0){
             alert("inserte el password")
         }else{
-            const res = await Resister_users({
+            try {
+                const res = await Resister_users({
                 username, 
                 password
             })
             console.log(res)
-        } 
 
-        
+            } catch (error) {
+             console.log(error)
+            } 
+        } 
+     }
+     const handleSubmit_login = async(e) => {
+        e.preventDefault();
+        if (username.length === 0) {
+            alert("inserte el usuario")
+        }else if (password.length === 0){
+            alert("inserte el password")
+        }else{
+            try {
+                const res = await Login({
+                username, 
+                password
+            })
+            console.log(res)
+
+            } catch (error) {
+             console.log(error)
+            } 
+        } 
      }
 
       return(
@@ -38,10 +60,10 @@
               </Components.SignUpContainer>
 
               <Components.SignInContainer signinIn={signIn}>
-                   <Components.Form>
+                   <Components.Form onSubmit={handleSubmit_login}>
                        <Components.Title>Sign in</Components.Title>
-                       <Components.Input type='email' placeholder='Email' />
-                       <Components.Input type='password' placeholder='Password' />
+                       <Components.Input type='text' placeholder='name' onChange={(e)=>setUsers(e.target.value)}/>
+                       <Components.Input type='password' placeholder='Password' onChange={(e)=>setPassword(e.target.value)}/>
                        <Components.Anchor href='#'>Forgot your password?</Components.Anchor>
                        <Components.Button>Sigin In</Components.Button>
                    </Components.Form>
