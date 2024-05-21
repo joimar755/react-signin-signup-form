@@ -1,4 +1,5 @@
  import React from "react";
+ import axios  from "axios";
  import { useState } from "react";
  import {Resister_users} from "./api/auth"
  import {Login} from "./api/auth"
@@ -40,7 +41,12 @@
                 username, 
                 password
             })
+            const token = res.data.access_token
+            console.log(token)
             console.log(res)
+            localStorage.setItem('token', token)
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            console.log('Login exitoso y token guardado');
 
             } catch (error) {
              console.log(error)
